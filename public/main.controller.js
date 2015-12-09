@@ -4,12 +4,23 @@ app.config(function($stateProvider) {
 	$stateProvider.state('main', {
 		url: '/',
 		templateUrl: '/main.html',
-		controller: 'MainController'
-			// RESOLVE!
+		controller: 'MainController',
+		resolve: {
+			users: function(User){
+				return User.findAll()
+			},
+
+			posts: function(Post,users){
+				return Post.findAll({},{bypassCache: true})
+			}
+		}
 	})
 })
 
-app.controller('MainController', function($scope) {
+app.controller('MainController', function($scope, posts) {
+
+	$scope.allPosts = posts;
+	console.log('posts: ',posts)
 
  	/*
 		TODOS: 
